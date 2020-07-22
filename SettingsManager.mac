@@ -1,0 +1,68 @@
+ROUTINE SettingsManager
+
+start
+    New scr,selection
+    Set scr=##class(User.Scr).%New()
+    Do {
+        Do scr.ClearScreen()
+        Write "Settings Manager"
+        Write !
+        Write !,"Add Setting (1)"
+        Write !,"Delete Setting (2)"
+        Write !,"Exit (0)"
+        Write !
+        Set selection=scr.Input("Select")
+        If selection=1 Do addSetting
+        If selection=2 Do deleteSetting
+    } While selection'=0
+    Quit
+
+addSetting
+    New title,selection,settingsNumber
+    Set settingsNumber=1
+    #; Kill ^Settings(settingsNumber)
+    Do {
+        Do scr.ClearScreen()
+        Write "Add Setting"
+        Write !
+        If $Data(^Settings(settingsNumber)) {
+            Write ^Settings(settingsNumber,"title")
+        }
+        Else {
+            Set title=scr.Input("Title")
+            Set ^Settings(settingsNumber,"title")=title
+        }
+        Write !
+        Write !,"Add Key (1)"
+        Write !,"Add Field (2)"
+        Write !,"Exit (0)"
+        Write !
+        Set selection=scr.Input("Select")
+        If selection=1 Do addVariable("keys")
+        If selection=2 Do addVariable("fields")
+    } While selection'=0
+    Quit
+
+addVariable(type)
+    New variableNumber
+    Set variableNumber=$Order(^Settings(settingsNumber,type,""),-1) + 1
+    Do scr.ClearScreen()
+    Write "Add "_type_" "_variableNumber
+    Write !
+    Set ^Settings(settingsNumber,type,variableNumber,"variable")=scr.Input("Variable")
+    If type="keys" Set ^Settings(settingsNumber,type,variableNumber,"kombi")=scr.Input("Kombi")
+    Set ^Settings(settingsNumber,type,variableNumber,"caption")=scr.Input("Caption")
+    If type="keys" Set ^Settings(settingsNumber,type,variableNumber,"quantor")=scr.Input("Quantor")
+    Set ^Settings(settingsNumber,type,variableNumber,"head")=scr.Input("Head")
+    Set ^Settings(settingsNumber,type,variableNumber,"width")=scr.Input("Width")
+    Quit
+    
+deleteSetting
+    New dump,title
+    Do scr.ClearScreen()
+    Write "Delete Setting"
+    Write !!
+    Write "Deleting Settings is not implemented yet."
+
+    Do scr.Confirm()
+    Quit

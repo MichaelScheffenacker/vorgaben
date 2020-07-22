@@ -1,0 +1,52 @@
+ROUTINE test
+
+Transform(fromArray,toArray,transString)
+	N transFrom,transTo
+	S transFrom=$P(transString,";",1),transTo=$P(transString,";",2)
+	; TransformSani(transFrom,transTo)
+	N i,key,newArray,keys,trans
+	S key="",i=1
+	D TransIter(i,key)
+	S fromArray(99)="check"
+	Return
+	
+TransIter(i,fromKeys)
+	S key="",j=0
+	Q:i>3
+	;W !,key,$$SA("fromArray",fromKeys,key)
+	F  S key=$O(@$$SA("fromArray",fromKeys,key)) Q:key=""  Q:j>10  D
+	. S j=j+1
+	. W !,key,$$SA("fromArray",fromKeys,key),!
+	. I $D(@$$SA("fromArray",fromKeys,key))=1 D
+	. . ;W !,key,$D(@$$SA("fromArray",fromKeys,key))
+	. . S @$$SA("toArray",fromKeys,key)=@$$SA("fromArray",fromKeys,key)
+	. ;S trans=$P(transTo,"/",i)
+	. ;S newKey=$P(transFrom,"/",i)
+	. I $D(@$$SA("fromArray",fromKeys,key))>1 D
+	. . D TransIter(i+1,$$StringKeys(fromKeys,key))
+	Return
+	
+TransformSani(transFrom,transTo)
+	N i,tier
+	F i=1:1:$L(transTo,"/") D
+	. S tier=$P(transTo,"/",i)
+	Return 1
+
+StringArray(name,keys,key)
+	N string
+	S string=name_"("
+	S string=string_$$StringKeys(keys,key)
+	S string=string_")"
+	Return string
+	
+StringKeys(keys,key)
+	N string
+	S string=""
+	I $D(keys)&&(keys'="") D
+	. S string=string_keys
+	. If $D(key) S string=string_","
+	I $D(key) S string=string_""""_key_""""
+	Return string
+
+SA(name,keys,key)
+	Return $$StringArray(name,keys,key)

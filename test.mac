@@ -1,0 +1,18 @@
+ROUTINE test
+
+start(console=0)
+    If console {
+        Do {
+            Do ##class(User.Scr).ClearScreen()
+            Write "Start"
+            Write !
+            Write !,"Settings Manager (1)"
+            Write !,"Input Setting (2)"
+            Write !,"Exit (0)"
+            Write !
+            Set selection= ##class(User.Scr).Input("Select")
+            If selection=1 Do start^SettingsManager
+            If selection=2 Set set=##class(User.Setting).%New(1) Do set.Input()
+        } While selection'=0
+    }
+    Quit

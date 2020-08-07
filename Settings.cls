@@ -1,17 +1,17 @@
 Class User.Settings Extends %RegisteredObject
 {
 
-ClassMethod Setting(SettingsNumber) As %Status
+ClassMethod setting(SettingsNumber) As %Status
 {
    
-    Set scr=##class(User.Input).%New()
-    Do scr.ClearScreen()
+    Set scr=##class(User.input).%New()
+    Do scr.clearScreen()
 
     Write
     Return $$$OK
 }
 
-ClassMethod Selection() As %Status
+ClassMethod selection() As %Status
 {
     Set line=3
 

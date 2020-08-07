@@ -1,44 +1,44 @@
 Class User.Scr Extends %RegisteredObject
 {
 
-ClassMethod Input(caption) As %Status
+ClassMethod input(caption) As %Status
 {
-    Do ..Inverse()
+    Do ..inverse()
     Write !,caption,"  :"
-    Do ..Normal()
+    Do ..normal()
     Write " "
     Read input
     Return input
 }
 
-ClassMethod Confirm() As %Status
+ClassMethod confirm() As %Status
 {
     Read !,dump
 }
 
-ClassMethod Print() As %Status
+ClassMethod print() As %Status
 {
     Write "asdf"
 }
 
-ClassMethod ClearScreen() As %Status
+ClassMethod clearScreen() As %Status
 {
     Write *27,"[2J"
-    Do ..Position(0,0)
-    Do ..Normal()
+    Do ..position(0,0)
+    Do ..normal()
 }
 
-ClassMethod Inverse() As %Status
+ClassMethod inverse() As %Status
 {
     Write *27,"[7m"
 }
 
-ClassMethod Normal() As %Status
+ClassMethod normal() As %Status
 {
     Write *27,"[0m"
 }
 
-ClassMethod Position(x As %Integer, y As %Integer) As %Status
+ClassMethod position(x As %Integer, y As %Integer) As %Status
 {
     Write *27,"[",x,$C(59),y,"H"
 }

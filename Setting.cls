@@ -32,38 +32,60 @@ Method %OnNew(setNum As %Integer) As %Status
     Return $$$OK
 }
 
-Method Input() As %Status
+Method input() As %Status
 {
     Set scr=##class(User.Scr).%New()
     Do  {
         Set keyValues="",fieldValues=""
-        Do scr.ClearScreen()
+        Do scr.clearScreen()
         Write ..title
         Write !
         For i=1:1:..keys.Count() {
             Set caption=..keys.GetAt(i).caption
             If keyValues'="" Set keyValues=keyValues_","
-            Set keyValues=keyValues_""""_scr.Input(caption)_""""
+            Set keyValues=keyValues_""""_scr.input(caption)_""""
         }
         For i=1:1:..fields.Count() {
             Set caption=..fields.GetAt(i).caption
             If fieldValues'="" Set fieldValues=fieldValues_";"
-            Set fieldValues=fieldValues_scr.Input(caption)
+            Set fieldValues=fieldValues_scr.input(caption)
         }
         Set KillGlobal="^Values("""_..title_""","_keyValues_",1)"
         Set SaveGlobal=KillGlobal_"="""_fieldValues_""""
         Write !
         Write !,"Save (1)"
         Write !,"Delete (2)"
+        Write !,"List (3)"
         Write !,"Exit (0)"
         Write !
-        Set selection=scr.Input("Select")
+        Set selection=scr.input("Select")
         If selection=1 Set @SaveGlobal
         If selection=2 Kill @KillGlobal
+        If selection=3 Do ..list()
         Write !
         ZWrite ^Values
     } While selection'=0
     Return $$$OK
+}
+
+Method list() As %Status
+{
+    Set scr=##class(User.Scr).%New()
+    Write !,"List",!
+    Do listIter("")
+    Set dump=scr.input("Select")
+    Return $$$OK
+    
+listIter(keys)
+    If keys'="" Set keys=keys_","
+    Set key="",VALUES="^Values("_keys_""""_key_""""_")" 
+    Do {
+        Set key=$Order(@VALUES)
+        Set VALUES="^Values("_keys_""""_key_""""_")"
+        Set data=$Data(@VALUES)
+        If data=1 Write !,VALUES_"="_@VALUES
+        If data=10 Do listIter(keys_""""_key_"""")
+    } While key=""
 }
 
 }

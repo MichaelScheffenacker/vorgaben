@@ -9,11 +9,13 @@ start
         Write !
         Write !,"Add Setting (1)"
         Write !,"Delete Setting (2)"
+        Write !,"List Settings (3)"
         Write !,"Exit (0)"
         Write !
         Set selection=scr.input("Select")
         If selection=1 Do addSetting
         If selection=2 Do deleteSetting
+        If selection=3 Do listSettings
     } While selection'=0
     Quit
 
@@ -63,6 +65,18 @@ deleteSetting
     Write "Delete Setting"
     Write !!
     Write "Deleting Settings is not implemented yet."
-
     Do scr.confirm()
     Quit
+
+listSettings
+    New selection,settingsNum,type,varNum,set,field
+    Set settingsNum=""
+    Do scr.clearScreen()
+    For  {
+        Set settingsNum=$O(^Settings(settingsNum))
+        If settingsNum="" Quit
+        Write !,$J(settingsNum,3)," ",^Settings(settingsNum,"title")
+    }
+    Write !
+    Set selection=scr.input("Select")
+    Return

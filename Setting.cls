@@ -72,20 +72,9 @@ Method list() As %Status
 {
     Set scr=##class(User.Scr).%New()
     Write !,"List",!
-    Do listIter("")
+    Do ##class(User.ArrayUtils).list("^Values")
     Set dump=scr.input("Select")
     Return $$$OK
-    
-listIter(keys)
-    If keys'="" Set keys=keys_","
-    Set key="",VALUES="^Values("_keys_""""_key_""""_")" 
-    Do {
-        Set key=$Order(@VALUES)
-        Set VALUES="^Values("_keys_""""_key_""""_")"
-        Set data=$Data(@VALUES)
-        If data=1 Write !,VALUES_"="_@VALUES
-        If data=10 Do listIter(keys_""""_key_"""")
-    } While key=""
 }
 
 }
